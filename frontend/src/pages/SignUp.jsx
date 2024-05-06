@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import {Link} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import axios from 'axios'
 
 export default function SignUp() {
@@ -7,6 +7,8 @@ export default function SignUp() {
   const [formData, setFormData] = useState({});
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  const navigate = useNavigate();
 
   const handleChanges = (e) => {
     setFormData({...formData, [e.target.id]:e.target.value});
@@ -21,9 +23,9 @@ export default function SignUp() {
       .post('http://localhost:8000/api/v1/user/register', formData)
       .then((response) => {
         console.log(response.data);
-        // navigate('/login')
         setError(false);
         setLoading(false);
+        navigate('/sign-in');
       })
       .catch((error) => {
         setError(true);

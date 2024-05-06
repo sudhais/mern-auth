@@ -18,8 +18,8 @@ export const login = (req, res,next) => {
         // res.status(401).json('the password is incorrect')
         return next(errorHandler(401,'Invalid Credentials'));       
       } 
-      const token = jwt.sign({id: user._id}, process.env.JWT_SECRET);
-      const {password:hashedPassword,...rest} = user._doc
+      const token = jwt.sign({id: user._id}, process.env.JWT_SECRET); //creating a token
+      const {password:hashedPassword,...rest} = user._doc  //getting user data except password from rest
       const expiryDate = new Date(Date.now() + (1000 * 60 * 60)) //1 hour
       res.cookie('access_token', token, {httpOnly: true, expires: expiryDate}).status(200).json({
         success:true,
