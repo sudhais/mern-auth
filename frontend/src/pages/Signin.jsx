@@ -1,14 +1,16 @@
 import { useState } from 'react';
 import {Link, useNavigate} from 'react-router-dom';
 import axios from 'axios'
+import { signInFailure, signInSuccess, signInStart } from '../redux/user/userSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 export default function Signin() {
 
   const [formData, setFormData] = useState({});
-  const [error, setError] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const {loading, error} = useSelector((state) => state.user);
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleChanges = (e) => {
     setFormData({...formData, [e.target.id]:e.target.value});
@@ -17,42 +19,43 @@ export default function Signin() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    setLoading(true);
-    setError(false);
-    axios
-      .post('http://localhost:8000/api/v1/user/login', formData)
-      .then((response) => {
-        console.log(response.data);
-        setError(false);
-        setLoading(false);
-        navigate('/');
-      })
-      .catch((error) => {
-        setError(true);
-        setLoading(false);
-        console.log(error);
-      })
+    // dispatch(signInStart());
+    // axios
+    //   .post('http://localhost:8000/api/v1/user/login', formData)
+    //   .then((response) => {
+    //     const data = response.data
+    //     console.log(data);
+    //     dispatch(signInSuccess(data));
+    //     if(!data.success){
+    //       dispatch(signInFailure());
+    //       return;
+    //     }
+    //     navigate('/');
+    //   })
+    //   .catch((error) => {
+    //     dispatch(signInFailure(error));
+    //     console.log(error);
+    //   })
 
-    // try{
-    //   setLoading(true);
-    //   const res = await fetch('api/v1/user/register', {
-    //     method: 'POST',
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //     },
-    //     body: JSON.stringify(formData),
-    //   });
-    //   const data = await res.json();
-    //   console.log(data);
-    //   setLoading(false);
-    //   if(!data.success){
-    //     setError(true);
-    //     return;
-    //   }
-    // }catch(error) {
-    //   setError(true);
-    //   setLoading(false);
-    // }
+    try{
+      dispatch(signInStart());
+      const res = await fetch('api/v1/user/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+      const data = await res.json();
+      console.log(data);
+      if(!data.success){
+        dispatch(signInFailure(data));
+        return;
+      }
+      dispatch(signInSuccess(data));
+    }catch(error) {
+      dispatch(signInFailure(error));
+    }
 
   }
 
@@ -86,7 +89,7 @@ export default function Signin() {
           <span className='text-blue-500'>Sign up</span>
         </Link>
       </div>
-      <p className='text-red-700 mt-5'>{error && 'something went wrong'}</p>
+      <p className='text-red-700 mt-5'>{error ? error.message || 'something went wrong' : ''}</p>
     </div>
   )
 }
