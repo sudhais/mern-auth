@@ -29,7 +29,7 @@ export const login = (req, res) => {
 };
 
 //Register 
-export const registerUser = (req,res) =>{
+export const registerUser = (req,res,next) =>{
   const {username, email, password} = req.body;
   const hashedPassword = bcryptjs.hashSync(password,10);
   const newUser = new userModel({username,email,password:hashedPassword});
@@ -42,10 +42,7 @@ export const registerUser = (req,res) =>{
 
     })
     .catch((error) => {
-      res.status(400).json({
-        success:false,
-        error:error.message
-      })
+      next(error);
     })
 }
 

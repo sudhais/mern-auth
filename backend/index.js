@@ -21,6 +21,17 @@ app.use((req,res,next)=>{
 
 app.use('/api/v1/user',user);
 
+//error output middileware
+app.use((err,req,res,next)=> {
+  const statusCode = err.statusCode || 500;
+  const message = err.message || 'Internal Server Error';
+  return res.status(statusCode).json({
+    success:false,
+    message,
+    statusCode
+  });
+})
+
 //error url middleware
 app.use('*', (req,res)=>{
   res.status(404).json({message:'page not found'})
