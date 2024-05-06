@@ -17,12 +17,8 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, 'password cannot be null'],
     trim: true,
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
-})
+  }
+}, {timestamps:true})  // automatically create the created time and end time when using timestamps true
 
 const User = mongoose.model('User', userSchema)
 
