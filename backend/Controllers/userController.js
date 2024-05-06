@@ -1,4 +1,5 @@
-import userModel from '../models/User.js'
+import userModel from '../models/User.js';
+import bcryptjs from 'bcryptjs';
 
 export const login = (req, res) => {
   const { email, password } = req.body;
@@ -7,15 +8,15 @@ export const login = (req, res) => {
     .then((user) => {
       if (user) {
         if (user.password === password) {
-          return res.status(200).json({
+          res.status(200).json({
             success:true,
             user
           })
         } else {
-          return res.status(401).json('the password is incorrect')
+          res.status(401).json('the password is incorrect')
         }
       } else {
-        return res.status(401).json('No Record exists')
+        res.status(401).json('No Record exists')
       }
     })
     .catch((error) => {
@@ -29,10 +30,12 @@ export const login = (req, res) => {
 
 //Register 
 export const registerUser = (req,res) =>{
-  const newUser = new userModel(req.body);
+  const {username, email, password} = req.body;
+  const hashedPassword = bcryptjs.hashSync(password,10);
+  const newUser = new userModel({username,email,password:hashedPassword});
   newUser.save()
     .then((savedUser) => {
-      return res.status(201).json({
+      res.status(201).json({
         success:true,
         user:savedUser
       })

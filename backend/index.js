@@ -9,7 +9,7 @@ config({path:join('./config/config.env')});
 
 const app = express();
 app.use(cors());
-app.use(express.json());
+app.use(express.json());  //it's allow to frontend inputs ex(postman, web browser) show backend in console log
 
 db();
 

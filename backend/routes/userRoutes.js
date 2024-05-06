@@ -2,7 +2,8 @@ import { Router } from 'express';
 import { login, registerUser,} from '../Controllers/userController.js';
 
 //router objetct
-const router = Router()
+const router = Router();
+// const router = express.Router();      //when we import express only
 
 //routers
 //LOGIN USER
