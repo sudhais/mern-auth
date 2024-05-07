@@ -1,19 +1,24 @@
 import express from 'express'
 import cors from 'cors'
-import {config} from 'dotenv'
-import { join } from 'path';
+import dotenv from 'dotenv'
+import path from 'path';
 import cookieParser from 'cookie-parser';
 import db from './config/db.js'
 import user from './routes/userRoutes.js'
+dotenv.config();
 
-
-config();
+const __dirname = path.resolve();
 const app = express();
+app.use(express.static(path.join(__dirname, 'client/dist')));
 app.use(cors());
 app.use(express.json());  //it's allow to frontend inputs ex(postman, web browser) show backend in console log
 app.use(cookieParser());
 
 db();
+
+app.get('*' , (req,res) => {
+  res.sendFile(path.join(__dirname, 'client', 'dist', 'index.html'))
+});
 
 //display the log of routes middleware
 app.use((req,res,next)=>{
