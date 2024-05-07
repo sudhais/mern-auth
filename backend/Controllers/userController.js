@@ -80,7 +80,7 @@ export const google = async (req, res, next) => {
       const expiryDate = new Date(Date.now() + (1000 * 60 * 60)) //1 hour
       res.cookie('access_token', token, {httpOnly: true, expires: expiryDate}).status(201).json({
         success:true,
-        user:savedUser
+        user:user
       });
     }
     
