@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { google, login, registerUser,updateUser} from '../Controllers/userController.js';
+import { deleteUser, google, login, registerUser,updateUser} from '../Controllers/userController.js';
 import { verifyToken } from '../utils/verifyUser.js';
 
 //router objetct
@@ -17,6 +17,7 @@ router.route('/register').post(registerUser);
 router.route('/google').post(google);
 
 router.post('/update/:id', verifyToken, updateUser);
+router.delete('/delete/:id', verifyToken, deleteUser);
 
 
 export default router
