@@ -1,5 +1,6 @@
 import { Router } from 'express';
-import { google, login, registerUser,} from '../Controllers/userController.js';
+import { google, login, registerUser,updateUser} from '../Controllers/userController.js';
+import { verifyToken } from '../utils/verifyUser.js';
 
 //router objetct
 const router = Router();
@@ -13,7 +14,9 @@ router.route('/login').post(login);
 router.route('/register').post(registerUser);
 // router.post('/register',registerUser)
 
-router.route('/google').post(google)
+router.route('/google').post(google);
+
+router.post('/update/:id', verifyToken, updateUser);
 
 
 export default router

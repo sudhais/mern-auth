@@ -2,6 +2,7 @@ import express from 'express'
 import cors from 'cors'
 import {config} from 'dotenv'
 import { join } from 'path';
+import cookieParser from 'cookie-parser';
 import db from './config/db.js'
 import user from './routes/userRoutes.js'
 
@@ -10,6 +11,7 @@ config({path:join('./config/config.env')});
 const app = express();
 app.use(cors());
 app.use(express.json());  //it's allow to frontend inputs ex(postman, web browser) show backend in console log
+app.use(cookieParser());
 
 db();
 
