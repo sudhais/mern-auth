@@ -44,6 +44,6 @@ app.use('*', (req,res)=>{
   res.status(404).json({message:'page not found'})
 })
 
-app.listen(process.env.PORT, () => {
+app.listen(process.env.PORT || 8000, () => {
   console.log(`server listening to the port : ${process.env.PORT}`);
 })
