@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { login, registerUser,} from '../Controllers/userController.js';
+import { google, login, registerUser,} from '../Controllers/userController.js';
 
 //router objetct
 const router = Router();
@@ -12,6 +12,8 @@ router.route('/login').post(login);
 //REGISTER USER
 router.route('/register').post(registerUser);
 // router.post('/register',registerUser)
+
+router.route('/google').post(google)
 
 
 export default router
